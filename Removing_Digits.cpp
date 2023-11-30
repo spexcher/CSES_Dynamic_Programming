@@ -28,7 +28,7 @@ void solve();
 signed main()
 {
     fast_io;
-    ll t, n, m, x, i, j, k, q;
+    ll t;
     t = 1;
     // cin>>t;
     while (t--)
@@ -39,28 +39,25 @@ signed main()
 }
 void solve()
 {
-    int n, x;
-    cin >> n >> x;
-    vector<int> v(n + 1);
-    fr(1, n + 1)
-            cin >>
-        v[i];
-    int dp[n + 1][x + 1];
+    ll n;
+    cin >> n;
 
+    int dp[n + 1];
+    dp[0] = 0;
     for (int i = 1; i <= n; i++)
     {
-        for (int sum = 0; sum <= x; sum++)
+        int steps = 1e7 + 2;
+        int temp = i;
+        while (temp > 0)
         {
-            if (sum == 0)
-                dp[i][sum] = 1;
-            else
+            int di = temp % 10;
+            temp /= 10;
+            if (di != 0)
             {
-                int op1 = (v[i] > sum) ? 0 : dp[i][sum - v[i]];
-                int op2 = (i == 1) ? 0 : dp[i - 1][sum];
-                dp[i][sum] = (op1 + op2) % mod;
+                steps = min(1 + dp[i - di], steps);
             }
         }
+        dp[i] = steps;
     }
-
-    cout << dp[n][x];
+    cout << dp[n] << "\n";
 }

@@ -28,7 +28,7 @@ void solve();
 signed main()
 {
     fast_io;
-    ll t, n, m, x, i, j, k, q;
+    ll t;
     t = 1;
     // cin>>t;
     while (t--)
@@ -39,28 +39,37 @@ signed main()
 }
 void solve()
 {
-    int n, x;
-    cin >> n >> x;
-    vector<int> v(n + 1);
-    fr(1, n + 1)
-            cin >>
-        v[i];
-    int dp[n + 1][x + 1];
-
-    for (int i = 1; i <= n; i++)
+    ll n;
+    cin >> n;
+    bool grid[n + 1][n + 1];
+    rep(i, 1, n + 1) rep(j, 1, n + 1)
     {
-        for (int sum = 0; sum <= x; sum++)
+        char ch;
+        cin >> ch;
+        if (ch == '.')
+            grid[i][j] = 0;
+        else
+            grid[i][j] = 1;
+    }
+    int dp[n + 1][n + 1];
+    for (int i = n; i >= 1; i--)
+    {
+        for (int j = n; j >= 1; j--)
         {
-            if (sum == 0)
-                dp[i][sum] = 1;
+            if (i == n && j == n)
+                dp[i][j] = 1;
             else
             {
-                int op1 = (v[i] > sum) ? 0 : dp[i][sum - v[i]];
-                int op2 = (i == 1) ? 0 : dp[i - 1][sum];
-                dp[i][sum] = (op1 + op2) % mod;
+                int op1 = (j == n) ? 0 : dp[i][j + 1];
+                int op2 = (i == n) ? 0 : dp[i + 1][j];
+                dp[i][j] = (op1 + op2) % mod;
+                if (grid[i][j])
+                    dp[i][j] = 0;
             }
         }
     }
-
-    cout << dp[n][x];
+    if (grid[n][n])
+        cout << 0;
+    else
+        cout << dp[1][1];
 }
