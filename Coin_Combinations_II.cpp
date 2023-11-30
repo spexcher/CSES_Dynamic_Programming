@@ -270,35 +270,29 @@ signed main()
     return 0;
 }
 //-----------------------------End Snippet--------------------------
-const int N = 100005;
-
-const int N2 = 105;
-int dp[N2][N];
-int arr[N2];
 void solve()
 {
     int n, x;
     cin >> n >> x;
-    int arr[n + 1];
-    for (int i = 1; i <= n; i++)
-        cin >> arr[i];
+    vector<int> v(n + 1);
+    for (int i = 1; i < n; i++)
+        cin >> v[i];
+    int dp[n + 1][x + 1];
 
     for (int i = 1; i <= n; i++)
     {
         for (int sum = 0; sum <= x; sum++)
         {
             if (sum == 0)
-            {
                 dp[i][sum] = 1;
-            }
             else
             {
-                int op1 = dp[i - 1][sum] % mod;
-                int op2 = ((sum - arr[i]) >= 0 ? dp[i][sum - arr[i]] : 0) % mod;
+                int op1 = (v[i] > sum) ? 0 : dp[i][sum - v[i]];
+                int op2 = (i == 1) ? 0 : dp[i - 1][sum];
                 dp[i][sum] = (op1 + op2) % mod;
             }
         }
     }
 
-    print(dp[n][x]);
+    cout << dp[n][x];
 }
